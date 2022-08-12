@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackEnd.Data.Interface
+namespace BackEnd.Zahri.Interface
 {
     public interface ICrud<T>
     {

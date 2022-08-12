@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
-using BackEnd.Data.DAL;
-using BackEnd.Data.Interface;
-using BackEnd.Domain;
+using BackEnd.Zahri;
+using BackEnd.Zahri.Interface;
 using BackEnd_Zahri.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd_Zahri.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase

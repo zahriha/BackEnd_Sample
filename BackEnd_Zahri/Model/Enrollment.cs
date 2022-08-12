@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackEnd.Domain
+namespace BackEnd.Zahri
 {
     public enum Grade
     {

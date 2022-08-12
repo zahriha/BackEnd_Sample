@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackEnd.Domain
+namespace BackEnd.Zahri
 {
-    public class Course
+    public class Student
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-
-        public int CourseID { get; set; }
+        public int ID { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string Title { get; set; }
+        public string FirstName { get; set; }
+
         [Required]
-        public int Credits { get; set; }
+        [MaxLength(100)]
+        public string LastName { get; set; }
+        public DateTime EnrollmentDate { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
 
     }

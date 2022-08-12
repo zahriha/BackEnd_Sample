@@ -1,5 +1,4 @@
-﻿using BackEnd.Data.Interface;
-using BackEnd.Domain;
+﻿using BackEnd.Zahri.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackEnd.Data.DAL
+namespace BackEnd.Zahri.DAL
 {
     public class StudentDAL : IStudent
     {

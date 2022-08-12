@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BackEnd.Domain;
+using BackEnd.Zahri;
 using BackEnd_Zahri.DTO;
 
 namespace BackEnd_Zahri.Profiles
