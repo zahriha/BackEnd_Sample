@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd_Zahri.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EnrollmentController : ControllerBase
@@ -23,11 +23,30 @@ namespace BackEnd_Zahri.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<EnrollmentReadDTO>> Get()
+        public async Task<IActionResult> GetAll(int page)
         {
             var result = await _enrollmentDAL.GetAll();
-            var enDT = _mapper.Map<IEnumerable<EnrollmentReadDTO>>(result);
-            return enDT;
+            List<EnrollmentReadDTO> enrollments = new List<EnrollmentReadDTO>();
+
+            foreach (var re in result)
+            {
+                EnrollmentReadDTO enr = new EnrollmentReadDTO();
+                enr.EnrollmentID = re.EnrollmentID;
+                enr.Grade = re.Grade;
+                enr.CourseID = re.CourseID;
+                enr.StudentID = re.StudentID;
+                enr.CourseTitle = re.Course.Title;
+                enr.StudentName = $"{re.Student.FirstName} {re.Student.LastName}";
+                enrollments.Add(enr);
+            }
+
+
+            var enDT = enrollments.Skip((page - 1) * 10).Take(5).ToList();
+            if (enDT.Count > 0)
+            {
+                enDT[0].TotalPage = Math.Ceiling((decimal)result.Count() / (decimal)5);
+            }
+            return Ok(enDT);
         }
 
         [HttpPost]
@@ -66,6 +85,7 @@ namespace BackEnd_Zahri.Controllers
             {
                 var updateEn = new Enrollment
                 {
+                    EnrollmentID = enrollmentReadDTO.EnrollmentID,
                     CourseID = enrollmentReadDTO.CourseID,
                     StudentID = enrollmentReadDTO.StudentID,
                     Grade = enrollmentReadDTO.Grade,

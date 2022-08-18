@@ -19,7 +19,7 @@ namespace BackEnd.Zahri
         public string Title { get; set; }
         [Required]
         public int Credits { get; set; }
-        public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
     }
 }

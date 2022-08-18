@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace BackEnd.Zahri.Interface
     public interface IStudent : ICrud<Student>
     {
         Task<IEnumerable<Student>> GetByName(string name);
+        Task<IEnumerable<Student>> GetStudentC();
 
     }
 }

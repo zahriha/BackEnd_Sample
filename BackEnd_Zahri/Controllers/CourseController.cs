@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd_Zahri.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CourseController : ControllerBase
@@ -22,11 +22,12 @@ namespace BackEnd_Zahri.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IEnumerable<CourseReadDTO>> Get()
+        public async Task<IEnumerable<CourseReadDTO>> Get(int page)
         {
             var result = await _courseDAL.GetAll();
             var cDT = _mapper.Map<IEnumerable<CourseReadDTO>>(result);
-            return cDT;
+            var pagination = cDT.Skip((page - 1) * 10).Take(10).ToList();
+            return pagination;
         }
 
         [HttpPost]
@@ -49,12 +50,12 @@ namespace BackEnd_Zahri.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<CourseReadDTO> Get(int id)
+        public async Task<CourseWithStudentDTO> GetId(int id)
         {
             var result = await _courseDAL.GetById(id);
             if (result == null)
                 throw new Exception($"Data dengan id {id} tidak ditemukan");
-            var cDT = _mapper.Map<CourseReadDTO>(result);
+            var cDT = _mapper.Map<CourseWithStudentDTO>(result);
             return cDT;
         }
 

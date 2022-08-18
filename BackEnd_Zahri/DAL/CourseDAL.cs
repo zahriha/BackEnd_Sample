@@ -31,19 +31,23 @@ namespace BackEnd.Zahri.DAL
 
                 throw new Exception($"{ex.Message}");
             }
-            
+    
         }
 
         public async Task<IEnumerable<Course>> GetAll()
         {
-            var c = await _context.Courses.OrderBy(c => c.Credits).ToListAsync();
+            var c = await _context.Courses.Include(e=>e.Enrollments)
+                .OrderBy(c => c.Credits).ToListAsync();
             
             return c;
         }
 
         public async Task<Course> GetById(int id)
         {
-            var c = await _context.Courses.FirstOrDefaultAsync(c => c.CourseID == id);
+            var c = await _context.Courses.Include(s => s.Enrollments)
+               .ThenInclude(e => e.Student)
+               .AsNoTracking()
+               .FirstOrDefaultAsync(c => c.CourseID == id);
             if (c == null)
                 throw new Exception($"Data dengan id {id} tidak ditemuka");
             return c;
@@ -78,6 +82,7 @@ namespace BackEnd.Zahri.DAL
                 var up = await _context.Courses.FirstOrDefaultAsync(c => c.CourseID == obj.CourseID);
                 if (up == null)
                     throw new Exception($"Data dengan id {obj.CourseID} tidak dapat ditemukan");
+                up.CourseID = obj.CourseID;
                 up.Title = obj.Title;
                 up.Credits = obj.Credits;
                 await _context.SaveChangesAsync();

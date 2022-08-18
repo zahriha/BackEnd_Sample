@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackEnd_Zahri.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace BackEnd.Zahri.Interface
 {
     public interface IEnrollment : ICrud<Enrollment>
     {
+
     }
 }

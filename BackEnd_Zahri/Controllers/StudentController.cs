@@ -23,11 +23,12 @@ namespace BackEnd_Zahri.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<StudentReadDTO>> Get()
+        public async Task<IEnumerable<StudentReadDTO>> Get(int page)
         {
             var result = await _studentDAL.GetAll();
             var stuDT = _mapper.Map<IEnumerable<StudentReadDTO>>(result);
-            return stuDT;
+            var pagination = stuDT.Skip((page - 1) * 10).Take(10).ToList();
+            return pagination;
         }
 
         [HttpPost]
@@ -50,14 +51,15 @@ namespace BackEnd_Zahri.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<StudentReadDTO> Get(int id)
+        public async Task<StudentWithCourseDTO> GetId(int id)
         {
             var result = await _studentDAL.GetById(id);
             if (result == null)
                 throw new Exception($"Data dengan id {id} tidak ditemukan");
-            var cDT = _mapper.Map<StudentReadDTO>(result);
+            var cDT = _mapper.Map<StudentWithCourseDTO>(result);
             return cDT;
         }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -114,6 +116,15 @@ namespace BackEnd_Zahri.Controllers
                 });
             }
             return studentReadDTOs;
+        }
+
+        
+        [HttpGet("WithAll")]
+        public async Task<IEnumerable<StudentWithCourseDTO>> GetStudentCourse()
+        {
+            var results = await _studentDAL.GetStudentC();
+            var stu = _mapper.Map<IEnumerable<StudentWithCourseDTO>>(results);
+            return stu;
         }
     }
 }

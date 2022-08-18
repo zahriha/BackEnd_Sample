@@ -1,4 +1,5 @@
 ﻿using BackEnd.Zahri.Interface;
+using BackEnd_Zahri.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,8 @@ namespace BackEnd.Zahri.DAL
 
         public async Task<IEnumerable<Enrollment>> GetAll()
         {
-            var enr = await _context.Enrollments.OrderBy(e => e.Grade).ToListAsync();
+            var enr = await _context.Enrollments.Include(e => e.Student)
+                .Include(e => e.Course).AsNoTracking().ToListAsync();
             return enr;
         }
 

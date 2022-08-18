@@ -1,4 +1,6 @@
 ﻿using BackEnd.Zahri.Interface;
+using BackEnd_Zahri.DTO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,17 +37,35 @@ namespace BackEnd.Zahri.DAL
 
         public async Task<IEnumerable<Student>> GetAll()
         {
-            var stud = await _context.Students.OrderBy(s => s.FirstName).ToListAsync();
-            return stud;
+            var stud = await _context.Students.Include(e => e.Enrollments).OrderBy(s => s.ID).ToListAsync();
+            return stud; 
         }
 
         public async Task<Student> GetById(int id)
         {
-            var st = await _context.Students.FirstOrDefaultAsync(s => s.ID == id);
+            var st = await _context.Students
+               .Include(s => s.Enrollments)
+               .ThenInclude(e => e.Course)
+               .AsNoTracking()
+               .FirstOrDefaultAsync(s => s.ID == id);
+
             if (st == null)
                 throw new Exception($"Data dengan id {id} tidak ditemukan");
             return st;
         }
+
+       
+        public async Task<IEnumerable<Student>> GetStudentC()
+        {
+            var stu = await _context.Students
+               .Include(s => s.Enrollments)
+               .ThenInclude(s => s.Course)
+
+               .OrderBy(s => s.ID).AsNoTracking().ToListAsync();
+
+            return stu;
+        }
+
 
         public async Task<IEnumerable<Student>> GetByName(string name)
         {
@@ -87,5 +107,7 @@ namespace BackEnd.Zahri.DAL
                 throw new Exception($"{ex.Message}");
             }
         }
+
+       
     }
 }
