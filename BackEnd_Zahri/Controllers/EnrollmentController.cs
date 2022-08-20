@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd_Zahri.Controllers
 {
-    //[Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class EnrollmentController : ControllerBase
@@ -21,7 +21,7 @@ namespace BackEnd_Zahri.Controllers
             _enrollmentDAL = enrollmentDAL;
             _mapper = mapper;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll(int page)
         {
@@ -39,7 +39,6 @@ namespace BackEnd_Zahri.Controllers
                 enr.StudentName = $"{re.Student.FirstName} {re.Student.LastName}";
                 enrollments.Add(enr);
             }
-
 
             var enDT = enrollments.Skip((page - 1) * 10).Take(5).ToList();
             if (enDT.Count > 0)

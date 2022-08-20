@@ -2,13 +2,14 @@
 using BackEnd.Zahri;
 using BackEnd.Zahri.Interface;
 using BackEnd_Zahri.DTO;
+using BackEnd_Zahri.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd_Zahri.Controllers
-{
-    //[Authorize]
+{    
+
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
@@ -21,14 +22,30 @@ namespace BackEnd_Zahri.Controllers
             _studentDAL = studentDAL;
             _mapper = mapper;
         }
-
+        [Authorize]
         [HttpGet]
-        public async Task<IEnumerable<StudentReadDTO>> Get(int page)
+        public async Task<IActionResult> Get(int page)
         {
             var result = await _studentDAL.GetAll();
             var stuDT = _mapper.Map<IEnumerable<StudentReadDTO>>(result);
-            var pagination = stuDT.Skip((page - 1) * 10).Take(10).ToList();
-            return pagination;
+
+            var pageResult = 3f;
+            var pageCount = Math.Ceiling(stuDT.Count() / pageResult);
+
+            var pagination = stuDT
+                .Skip((page - 1) * (int)pageResult)
+                .Take((int)pageResult)
+                .ToList();
+
+            if (pagination != null)
+            {
+                pagination[0].TotalPages = (int)pageCount;
+                pagination[0].PageIndex = page;
+                
+
+            }
+           
+            return Ok(pagination);
         }
 
         [HttpPost]

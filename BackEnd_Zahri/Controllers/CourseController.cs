@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd_Zahri.Controllers
 {
-    //[Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class CourseController : ControllerBase
@@ -21,6 +21,8 @@ namespace BackEnd_Zahri.Controllers
             _courseDAL = courseDAL;
             _mapper = mapper;
         }
+
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<CourseReadDTO>> Get(int page)
         {

@@ -1,22 +1,13 @@
 ﻿using BackEnd.Zahri.Interface;
+using BackEnd_Zahri.DTO;
 
 namespace BackEnd_Zahri.Model
 {
     public class PaginatedList
     {
-        public int PageIndex { get; private set; }
-        public int TotalPages { get; private set; }
-
-        private readonly IEnrollment _enrollment;
-
-        public PaginatedList(IEnrollment enrollment, 
-            int count, int pageIndex, int pageSize)
-        {
-            PageIndex = pageIndex;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            _enrollment = enrollment;
-            
-        }
+        public List<StudentReadDTO> Students { get; set; } = new List<StudentReadDTO>();
+        public int TotalPages { get; set; }
+        public int PageIndex { get; set; }
 
         public bool HasPreviousPage
         {

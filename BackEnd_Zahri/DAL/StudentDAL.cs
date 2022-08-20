@@ -37,6 +37,7 @@ namespace BackEnd.Zahri.DAL
 
         public async Task<IEnumerable<Student>> GetAll()
         {
+            
             var stud = await _context.Students.Include(e => e.Enrollments).OrderBy(s => s.ID).ToListAsync();
             return stud; 
         }
